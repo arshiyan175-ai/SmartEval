@@ -1,0 +1,119 @@
+{
+  "project_title": "GradeWise AI - Teacher Answer Assessment Studio",
+  "archetype": "ORGANIC_AND_EARTHY_EDITORIAL",
+  "theme_strategy": "Warm Warm-Academic Light Mode primary with crisp high-contrast dark accents and subtle sage/clay status highlights. Tailored for prolonged teacher focus without dark-mode coldness or generic blue SaaS flatness.",
+  "typography": {
+    "heading_font": "Cabinet Grotesk / Outfit / Serif Accent (Playfair Display for high-level numbers & badges)",
+    "body_font": "Plus Jakarta Sans / Inter",
+    "mono_font": "JetBrains Mono / Fira Code (for extracted OCR text & raw scores)",
+    "scale": {
+      "h1": "text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900",
+      "h2": "text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900",
+      "h3": "text-lg sm:text-xl font-medium text-slate-800",
+      "h4": "text-base font-medium text-slate-800",
+      "body": "text-sm sm:text-base text-slate-700 leading-relaxed",
+      "small": "text-xs sm:text-sm text-slate-500",
+      "label": "text-xs font-semibold uppercase tracking-wider text-slate-600"
+    }
+  },
+  "colors": {
+    "primary": {
+      "main": "#1E3A2B",
+      "hover": "#14281E",
+      "light": "#E8F0EC",
+      "label": "Deep Evergreen / Chalkboard Pine"
+    },
+    "secondary": {
+      "main": "#C86D51",
+      "hover": "#B35B40",
+      "light": "#FDF2EE",
+      "label": "Warm Terracotta / Ink Stamp"
+    },
+    "background": {
+      "app": "#FAF8F5",
+      "surface": "#FFFFFF",
+      "surface_alt": "#F3EFEA",
+      "card_border": "#E5DFD5"
+    },
+    "text": {
+      "primary": "#1A201C",
+      "muted": "#526057",
+      "subtle": "#7A8A80"
+    },
+    "grading_status": {
+      "full_marks": {
+        "bg": "#ECFDF5",
+        "text": "#065F46",
+        "border": "#A7F3D0",
+        "badge": "Perfect / Exceptional"
+      },
+      "partial_marks": {
+        "bg": "#FEF3C7",
+        "text": "#92400E",
+        "border": "#FDE68A",
+        "badge": "Partial Credit"
+      },
+      "low_marks": {
+        "bg": "#FEF2F2",
+        "text": "#991B1B",
+        "border": "#FECACA",
+        "badge": "Needs Review / Incorrect"
+      },
+      "ai_confidence_high": "#059669",
+      "ai_confidence_med": "#D97706",
+      "ai_confidence_low": "#DC2626"
+    }
+  },
+  "layout_architecture": {
+    "shell": "Top Sticky Warm-Glass Header + Two-Column Studio Layout for Grading Workspace + Collapsible Drawer for Previous Submissions",
+    "grading_workspace": "Left Column (45% width): High-resolution Image/PDF viewer with zoom, page navigation, pan, and OCR highlight boxes. Right Column (55% width): Question extraction, Max Marks input, Rubric/Guidance input, AI Evaluation breakdown with edit/override capability, detailed criteria breakdown, and feedback generator.",
+    "spacing_scale": "Generous academic padding (p-6 to p-10 on primary panels, gap-6 on grid columns)",
+    "container_borders": "1px solid #E5DFD5 with subtle shadow-sm (0 1px 3px rgba(0,0,0,0.05))"
+  },
+  "key_features_and_views": {
+    "dashboard_hero": {
+      "description": "Quick dropzone hero banner with quick start presets (e.g., Math Quiz, History Essay, Short Answer) and recent grading activity.",
+      "primary_action": "Upload Answer Sheet (Image/PDF)",
+      "data_testid": "upload-hero-dropzone"
+    },
+    "upload_flow": {
+      "step_1": "Drag & Drop or File Select (JPEG, PNG, WEBP, PDF). Instant image preview with page thumbnails.",
+      "step_2": "Configuration Bar: Set Subject, Question Text (or AI auto-extract), Maximum Marks (e.g. 10), and Optional Answer Key/Rubric.",
+      "step_3": "Click 'Assess Answer' with live progress spinner showing OCR scanning, Rubric matching, and Feedback composition."
+    },
+    "results_workspace": {
+      "header_stats": "Scored X / Max Marks with percentage pill, AI Confidence indicator, and manual override trigger.",
+      "side_by_side": "Original document scan side-by-side with extracted student text and line-by-line mark breakdown.",
+      "feedback_panel": "Strengths, Areas for Improvement, Suggested Marks Breakdown per criterion, and Teacher Comment box with Quick Copy or Export PDF button."
+    },
+    "history_and_analytics": {
+      "list_view": "Table & Card toggle of previous student assessments, searchable by student name/id, subject, date, or mark range.",
+      "quick_actions": "Re-evaluate, Export Summary, Delete record, View detailed sheet."
+    }
+  },
+  "image_assets": {
+    "sample_answer_sheets": [
+      {
+        "image_url": "https://images.unsplash.com/photo-1606326608690-4e0281b1e588?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTV8MHwxfHNlYXJjaHwxfHx0ZWFjaGVyJTIwZ3JhZGluZyUyMHBhcGVycyUyMHNjaG9vbCUyMGNsYXNzcm9vbSUyMHRlc3QlMjBzY29yZXxlbnwwfHx8fDE3OTA2MTQ2NzN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Answer sheet preview with test options and notes",
+        "category": "sample_document_1"
+      },
+      {
+        "image_url": "https://images.unsplash.com/photo-1599579524220-8e32e6e602d0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTV8MHwxfHNlYXJjaHszfHx0ZWFjaGVyJTIwZ3JhZGluZyUyMHBhcGVycyUyMHNjaG9vbCUyMHRlc3QlMjBzY29yZXxlbnwwfHx8fDE3OTA2MTQ2NzN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Handwritten worksheet document",
+        "category": "sample_document_2"
+      },
+      {
+        "image_url": "https://images.unsplash.com/photo-1560785496-321917f24016?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTV8MHwxfHNlYXJjaHw0fHx0ZWFjaGVyJTIwZ3JhZGluZyUyMHBhcGVycyUyMHNjaG9vbCUyMHRlc3QlMjBzY29yZXxlbnwwfHx8fDE3OTA2MTQ2NzN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Classroom test paper on desk",
+        "category": "sample_document_3"
+      }
+    ]
+  },
+  "general_ui_ux_guidelines": {
+    "testing_attributes": "All interactive buttons, inputs, tabs, modal triggers, and metric cards MUST have descriptive data-testid attributes (e.g. data-testid='upload-file-input', data-testid='max-marks-input', data-testid='evaluate-btn', data-testid='score-override-input').",
+    "accessibility": "Ensure contrast ratio exceeds 4.5:1 on all text labels. Focus outlines must be sharp (ring-2 ring-emerald-700 ring-offset-2). Keyboard shortcuts for quick grading navigation (e.g. Enter to confirm, Esc to close).",
+    "empty_and_loading_states": "Always show illustrative placeholder previews when no document is selected. When processing, render a realistic skeleton loader with multi-stage progress (e.g., 'Extracting handwriting...', 'Comparing against rubric...', 'Generating constructive feedback...').",
+    "micro_interactions": "Smooth transition on tab switches, score slider adjustments, and hover cards. Toast notifications using sonner for actions like 'Grade saved', 'Export generated', 'Rubric copied'."
+  }
+}
