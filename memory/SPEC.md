@@ -1,17 +1,17 @@
 # GradeWise — Living Spec
 
 ## What it does
-GradeWise is a teacher-facing workspace for uploading a student answer image or PDF, entering the question and maximum marks, and receiving a review-ready first-pass score, mark breakdown, and constructive feedback.
+GradeWise is a teacher-facing workspace for uploading a student answer image or PDF, entering the question and maximum marks, and receiving a live Gemini vision extraction plus a review-ready score, mark breakdown, transparent justification, answer-quality review, short-answer assessment, and constructive feedback.
 
 ## Data model
-- `AssessmentCreate`: file name/type, student name, subject, question text, optional pasted answer, maximum marks, and optional rubric.
-- `Assessment`: persisted assessment with score, percentage, confidence, extracted answer, feedback, strengths, improvements, criterion breakdown, and UTC creation time.
+- `AssessmentCreate`: file name/type, base64 file data, student name, subject, optional question text, optional pasted answer, maximum marks, and optional rubric.
+- `Assessment`: persisted assessment with score, percentage, confidence, live-AI source, extracted question/answer, word count, answer quality, length assessment, short-answer assessment, score justification, feedback, strengths, weaknesses, improvements, criterion breakdown, and UTC creation time.
 
 ## Key flows
 1. Teacher uploads an image/PDF in the Studio panel.
-2. Teacher configures question, marks, subject, optional rubric, and optional pasted answer.
-3. Teacher selects Assess answer and reviews the score and criteria breakdown.
+2. Teacher configures optional question, marks, subject, optional rubric, and optional pasted answer.
+3. Teacher selects Assess answer; Gemini vision reads the image/PDF and returns the score plus detailed explanation.
 4. Assessments persist in MongoDB and appear in Recent assessments; rows can be reopened or deleted.
 
 ## Auth and integrations
-There is no authentication. The current grader is **MOCKED** and deterministic: it uses the optional pasted answer length to produce a review-ready score and clearly discloses that status in the UI. No external AI API is connected yet.
+There is no authentication. Live grading uses Gemini `gemini-3.1-pro-preview` through the Emergent universal key in `backend/.env`. The teacher-facing mark is an AI suggestion and must remain reviewable; legacy records may display **MOCKED** because they were created before live grading was enabled.
