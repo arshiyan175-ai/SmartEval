@@ -4,14 +4,18 @@ import { motion } from "motion/react";
 import {
   AlertCircle,
   ArrowRight,
+  Award,
   BookOpen,
   BrainCircuit,
   Check,
   ChevronDown,
   ClipboardCheck,
   FileImage,
+  FileSearch,
   FileText,
   History,
+  Lightbulb,
+  ListChecks,
   Loader2,
   MessageSquareText,
   Search,
@@ -25,6 +29,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { apiDelete, apiGet, apiPost } from "@/lib/api";
 import type { Assessment, AssessmentCreate } from "@/lib/types";
@@ -49,11 +54,12 @@ const formatDate = (value: string) =>
 function ScoreRing({ score, maxMarks }: { score: number; maxMarks: number }) {
   const percentage = Math.round((score / maxMarks) * 100);
   return (
-    <div className="relative flex size-32 items-center justify-center rounded-full border-[12px] border-[#dfe9e2] text-center" data-testid="score-ring">
-      <div className="absolute inset-[-12px] rounded-full border-[12px] border-transparent border-t-[#1e3a2b] border-r-[#1e3a2b]" />
-      <div>
-        <p className="font-serif text-4xl font-bold leading-none text-[#1e3a2b]">{score}</p>
-        <p className="mt-1 text-xs font-semibold text-[#718077]">of {maxMarks} · {percentage}%</p>
+    <div className="relative flex size-32 items-center justify-center rounded-full p-[9px] shadow-[0_10px_32px_rgba(8,25,17,0.18)]" style={{ background: `conic-gradient(#dba07f ${percentage * 3.6}deg, rgba(255,255,255,0.14) 0deg)` }} data-testid="score-ring">
+      <div className="flex size-full items-center justify-center rounded-full bg-[#183426] text-center ring-1 ring-white/10">
+        <div>
+          <p className="font-serif text-4xl font-bold leading-none text-white" data-testid="score-value">{score}</p>
+          <p className="mt-1 text-[11px] font-semibold text-white/65" data-testid="score-maximum">of {maxMarks} · {percentage}%</p>
+        </div>
       </div>
     </div>
   );
@@ -245,22 +251,56 @@ export default function Home() {
         </section>
 
         {activeAssessment && (
-          <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mt-8 overflow-hidden rounded-2xl border border-[#d9e6dc] bg-[#f5f9f6] shadow-[0_12px_35px_rgba(57,52,43,0.06)]" data-testid="assessment-result">
-            <div className="flex flex-col justify-between gap-5 border-b border-[#dce8df] px-5 py-6 sm:flex-row sm:items-center sm:px-8">
-              <div><div className="mb-2 flex flex-wrap items-center gap-2"><Badge className="bg-[#dcefe2] text-[#35634b] hover:bg-[#dcefe2]" data-testid="result-status-badge"><Check size={13} /> Ready for review</Badge><Badge variant="outline" className="border-[#e3c9bd] bg-[#fff8f5] text-[#a7543b]" data-testid="ai-source-badge"><BrainCircuit size={13} /> {activeAssessment.ai_source === "Live AI" ? "Live Gemini vision" : "MOCKED"}</Badge><span className="text-xs font-semibold text-[#8a998f]">{activeAssessment.subject} · {activeAssessment.file_name}</span></div><h2 className="font-heading text-2xl font-bold tracking-[-0.04em] text-[#1e3a2b]" data-testid="result-heading">Assessment for {activeAssessment.student_name}</h2></div>
-              <div className="flex items-center gap-5"><div className="text-right"><p className="text-xs font-bold uppercase tracking-[0.16em] text-[#718077]">AI confidence</p><p className="mt-1 font-mono text-sm font-bold text-[#35634b]" data-testid="confidence-value">{activeAssessment.confidence}</p></div><ScoreRing score={activeAssessment.score} maxMarks={activeAssessment.max_marks} /></div>
-            </div>
-            <div className="grid gap-8 px-5 py-7 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
-              <div>
-                <p className="section-kicker">Question read from the paper</p>
-                <div className="mt-3 flex gap-3 rounded-xl border border-[#e1e9e2] bg-white p-4 text-sm leading-6 text-[#526057]" data-testid="extracted-question"><ScanText size={17} className="mt-1 shrink-0 text-[#c86d51]" /><span>{activeAssessment.question_text}</span></div>
-                <div className="mt-5 flex items-center justify-between"><p className="section-kicker">Student answer extracted</p><span className="font-mono text-[11px] text-[#8a998f]" data-testid="answer-word-count">{activeAssessment.word_count} words</span></div>
-                <div className="mt-3 rounded-xl border border-[#e1e9e2] bg-white p-4 font-mono text-xs leading-6 text-[#526057]" data-testid="extracted-answer">{activeAssessment.extracted_answer}</div>
-                <div className="mt-6 rounded-xl border border-[#e1e9e2] bg-white p-5" data-testid="feedback-panel"><p className="section-kicker">Teacher-facing feedback</p><p className="mt-3 text-sm leading-6 text-[#526057]" data-testid="teacher-feedback">{activeAssessment.feedback}</p><div className="mt-5 grid gap-5 sm:grid-cols-3"><div><p className="text-xs font-bold uppercase tracking-wider text-[#35634b]">What worked</p><ul className="mt-2 space-y-2 text-xs leading-5 text-[#526057]">{activeAssessment.strengths.map((item) => <li key={item} className="flex gap-2"><Check size={14} className="mt-0.5 shrink-0 text-[#5b9a79]" />{item}</li>)}</ul></div><div><p className="text-xs font-bold uppercase tracking-wider text-[#c86d51]">Watch next</p><ul className="mt-2 space-y-2 text-xs leading-5 text-[#526057]">{activeAssessment.weaknesses.map((item) => <li key={item} className="flex gap-2"><AlertCircle size={14} className="mt-0.5 shrink-0 text-[#c86d51]" />{item}</li>)}</ul></div><div><p className="text-xs font-bold uppercase tracking-wider text-[#c86d51]">Suggested improvement</p><ul className="mt-2 space-y-2 text-xs leading-5 text-[#526057]">{activeAssessment.improvements.map((item) => <li key={item} className="flex gap-2"><ArrowRight size={14} className="mt-0.5 shrink-0 text-[#c86d51]" />{item}</li>)}</ul></div></div></div>
-                <div className="mt-5 rounded-xl border border-[#e1e9e2] bg-white p-5" data-testid="answer-quality-panel"><div className="flex items-center justify-between gap-4"><div><p className="section-kicker">Answer quality</p><p className="mt-2 font-heading text-xl font-bold text-[#1e3a2b]" data-testid="answer-quality">{activeAssessment.quality}</p></div><div className="rounded-full bg-[#edf4ee] px-3 py-1.5 text-xs font-bold text-[#35634b]" data-testid="answer-length-assessment">{activeAssessment.length_assessment}</div></div><p className="mt-3 text-sm leading-6 text-[#526057]" data-testid="quality-summary">{activeAssessment.quality_summary}</p><div className="mt-4 flex gap-2 border-t border-[#eee9e2] pt-4 text-xs leading-5 text-[#718077]" data-testid="short-answer-assessment"><MessageSquareText size={15} className="mt-0.5 shrink-0 text-[#c86d51]" /><span>{activeAssessment.short_answer_assessment}</span></div></div>
+          <motion.section initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="result-shell mt-9 overflow-hidden rounded-[28px] border border-[#d5dfd7] bg-white shadow-[0_24px_70px_rgba(40,51,43,0.10)]" data-testid="assessment-result">
+            <div className="relative overflow-hidden bg-[#183426] px-5 py-7 text-white sm:px-8 lg:px-10">
+              <div className="pointer-events-none absolute -right-20 -top-40 size-96 rounded-full border border-white/10 bg-white/[0.03]" />
+              <div className="pointer-events-none absolute bottom-0 left-[42%] h-full w-px bg-white/10" />
+              <div className="relative flex flex-col justify-between gap-7 sm:flex-row sm:items-center">
+                <div className="max-w-2xl">
+                  <div className="mb-4 flex flex-wrap items-center gap-2"><Badge className="border border-[#8ab29a]/40 bg-[#315c46] text-[#e3f4e8] hover:bg-[#315c46]" data-testid="result-status-badge"><Check size={13} /> Ready for teacher review</Badge><Badge variant="outline" className="border-white/15 bg-white/[0.06] text-white/75" data-testid="ai-source-badge"><BrainCircuit size={13} /> {activeAssessment.ai_source === "Live AI" ? "Live Gemini vision" : "MOCKED"}</Badge></div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50" data-testid="result-file-meta">{activeAssessment.subject} · {activeAssessment.file_name}</p>
+                  <h2 className="mt-2 font-heading text-2xl font-bold tracking-[-0.04em] sm:text-3xl" data-testid="result-heading">Assessment for {activeAssessment.student_name}</h2>
+                  <p className="mt-3 max-w-xl text-sm leading-6 text-white/65" data-testid="result-quality-summary">{activeAssessment.quality_summary}</p>
+                </div>
+                <div className="flex items-center gap-6 sm:shrink-0"><div className="text-left sm:text-right"><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">Assessment quality</p><p className="mt-1 text-lg font-bold text-[#f1c5ad]" data-testid="answer-quality">{activeAssessment.quality}</p><p className="mt-2 text-xs text-white/55">Confidence <span className="font-bold text-white" data-testid="confidence-value">{activeAssessment.confidence}</span></p></div><ScoreRing score={activeAssessment.score} maxMarks={activeAssessment.max_marks} /></div>
               </div>
-              <div><div className="rounded-xl border border-[#e8ded6] bg-[#fffaf7] p-5" data-testid="score-justification"><div className="flex items-center gap-2"><BrainCircuit size={16} className="text-[#c86d51]" /><p className="section-kicker text-[#a7543b]">Why this score?</p></div><p className="mt-3 text-sm leading-6 text-[#526057]" data-testid="score-justification-text">{activeAssessment.score_justification}</p></div><div className="mt-6 flex items-center justify-between"><p className="section-kicker">Mark breakdown</p><span className="font-mono text-xs text-[#8a998f]">{activeAssessment.score}/{activeAssessment.max_marks} total</span></div><div className="mt-3 space-y-3">{activeAssessment.criteria.map((criterion) => <div key={criterion.criterion} className="rounded-xl border border-[#e1e9e2] bg-white p-4" data-testid={`criterion-${criterion.criterion.toLowerCase().replaceAll(" ", "-")}`}><div className="flex items-center justify-between gap-4"><p className="text-sm font-bold text-[#1e3a2b]">{criterion.criterion}</p><p className="font-mono text-sm font-bold text-[#35634b]">{criterion.score}<span className="font-normal text-[#9aa69d]">/{criterion.max_score}</span></p></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#e9efea]"><div className="h-full rounded-full bg-[#5b9a79]" style={{ width: `${(criterion.score / criterion.max_score) * 100}%` }} /></div><p className="mt-3 text-xs leading-5 text-[#718077]">{criterion.comment}</p></div>)}</div><div className="mt-5 flex flex-wrap gap-2"><Button type="button" variant="outline" onClick={() => toast.success("Feedback copied to clipboard")} className="border-[#c9dacc] bg-white text-[#35634b] hover:bg-[#edf4ee]" data-testid="copy-feedback-button">Copy feedback</Button><Button type="button" variant="ghost" onClick={() => setActiveAssessment(null)} className="text-[#718077]" data-testid="close-result-button">Close result</Button></div></div>
             </div>
+
+            <Tabs defaultValue="overview" className="w-full" data-testid="result-tabs">
+              <div className="border-b border-[#e8e4dd] bg-[#fcfbf9] px-5 sm:px-8 lg:px-10">
+                <TabsList variant="line" className="h-14 w-full justify-start gap-6 bg-transparent p-0 sm:gap-9" data-testid="result-tabs-list">
+                  <TabsTrigger value="overview" className="h-14 rounded-none px-0 text-sm font-bold text-[#738078] data-selected:text-[#1e3a2b]" data-testid="overview-tab"><Award size={16} /> Overview</TabsTrigger>
+                  <TabsTrigger value="extraction" className="h-14 rounded-none px-0 text-sm font-bold text-[#738078] data-selected:text-[#1e3a2b]" data-testid="extraction-tab"><FileSearch size={16} /> Extracted work</TabsTrigger>
+                  <TabsTrigger value="feedback" className="h-14 rounded-none px-0 text-sm font-bold text-[#738078] data-selected:text-[#1e3a2b]" data-testid="feedback-tab"><MessageSquareText size={16} /> Feedback</TabsTrigger>
+                </TabsList>
+              </div>
+
+              <div className="bg-[#f6f4ef] px-5 py-7 sm:px-8 lg:px-10 lg:py-9">
+                <TabsContent value="overview" className="m-0" data-testid="overview-tab-panel">
+                  <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
+                    <div className="space-y-5">
+                      <article className="rounded-2xl border border-[#eadfd7] bg-[#fffaf7] p-5 sm:p-6" data-testid="score-justification"><div className="flex items-center gap-2 text-[#a7543b]"><BrainCircuit size={17} /><p className="section-kicker text-[#a7543b]">Why this score?</p></div><p className="mt-4 text-[15px] leading-7 text-[#3f4d44]" data-testid="score-justification-text">{activeAssessment.score_justification}</p></article>
+                      <article className="rounded-2xl border border-[#dfe5df] bg-white p-5 sm:p-6" data-testid="answer-quality-panel"><div className="flex items-start justify-between gap-4"><div><p className="section-kicker">Response profile</p><p className="mt-2 font-heading text-xl font-bold text-[#1e3a2b]" data-testid="response-quality">{activeAssessment.quality}</p></div><span className="rounded-full bg-[#edf4ee] px-3 py-1.5 font-mono text-[11px] font-bold text-[#35634b]" data-testid="answer-word-count">{activeAssessment.word_count} words</span></div><p className="mt-4 text-sm leading-6 text-[#5e6b63]" data-testid="quality-summary">{activeAssessment.quality_summary}</p><div className="mt-5 border-t border-[#eeeae4] pt-4"><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8a998f]">Length & relevance</p><p className="mt-2 text-xs leading-5 text-[#65736a]" data-testid="answer-length-assessment">{activeAssessment.length_assessment}</p></div></article>
+                    </div>
+                    <div><div className="mb-4 flex items-center justify-between"><div className="flex items-center gap-2"><ListChecks size={17} className="text-[#35634b]" /><p className="section-kicker text-[#526057]">Criterion breakdown</p></div><span className="rounded-full bg-[#e5eee8] px-3 py-1 font-mono text-xs font-bold text-[#35634b]" data-testid="breakdown-total">{activeAssessment.score}/{activeAssessment.max_marks} total</span></div><div className="space-y-3">{activeAssessment.criteria.map((criterion, index) => <article key={criterion.criterion} className="group rounded-2xl border border-[#dfe5df] bg-white p-5 shadow-[0_2px_10px_rgba(40,51,43,0.03)] hover:border-[#b8cbbd]" data-testid={`criterion-${criterion.criterion.toLowerCase().replaceAll(" ", "-")}`}><div className="flex items-start justify-between gap-4"><div className="flex gap-3"><span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-[#edf4ee] font-mono text-[11px] font-bold text-[#35634b]">0{index + 1}</span><div><p className="text-sm font-bold text-[#1e3a2b]">{criterion.criterion}</p><p className="mt-2 text-xs leading-5 text-[#718077]">{criterion.comment}</p></div></div><p className="shrink-0 font-serif text-xl font-bold text-[#1e3a2b]">{criterion.score}<span className="font-sans text-xs font-medium text-[#9aa69d]">/{criterion.max_score}</span></p></div><div className="mt-4 ml-10 h-1.5 overflow-hidden rounded-full bg-[#edf0ed]"><div className="h-full rounded-full bg-[#5b9a79]" style={{ width: `${(criterion.score / criterion.max_score) * 100}%` }} /></div></article>)}</div></div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="extraction" className="m-0" data-testid="extraction-tab-panel">
+                  <div className="grid gap-6 lg:grid-cols-[0.7fr_1.3fr]">
+                    <aside className="rounded-2xl border border-[#dce4dd] bg-[#eaf1ec] p-5 sm:p-6" data-testid="extraction-summary"><div className="flex size-10 items-center justify-center rounded-xl bg-[#1e3a2b] text-white"><ScanText size={18} /></div><p className="mt-5 section-kicker text-[#526057]">Extraction summary</p><h3 className="mt-2 font-heading text-xl font-bold text-[#1e3a2b]">Paper turned into editable text</h3><p className="mt-3 text-sm leading-6 text-[#65736a]">Review the transcription against the original document before publishing a final mark.</p><div className="mt-6 space-y-3 border-t border-[#cad8ce] pt-5 text-xs text-[#65736a]"><div className="flex justify-between"><span>Words detected</span><strong className="font-mono text-[#1e3a2b]">{activeAssessment.word_count}</strong></div><div className="flex justify-between"><span>Reading confidence</span><strong className="text-[#1e3a2b]">{activeAssessment.confidence}</strong></div><div className="flex justify-between"><span>Source</span><strong className="text-[#1e3a2b]">{activeAssessment.ai_source}</strong></div></div></aside>
+                    <article className="document-paper relative overflow-hidden rounded-2xl border border-[#ddd7cd] bg-[#fffefa] px-6 py-7 shadow-[0_14px_40px_rgba(68,61,49,0.08)] sm:px-10 sm:py-9" data-testid="extracted-document"><div className="absolute left-0 top-0 h-full w-1 bg-[#c86d51]/70" /><div className="flex items-center justify-between border-b border-[#e9e3da] pb-5"><div><p className="font-serif text-lg font-bold text-[#1e3a2b]">Transcribed answer sheet</p><p className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#9a9185]">{activeAssessment.subject} · {activeAssessment.student_name}</p></div><FileText size={22} className="text-[#b5ada1]" /></div><div className="mt-7"><p className="section-kicker text-[#a7543b]">Question</p><p className="mt-3 font-serif text-lg leading-8 text-[#29342d]" data-testid="extracted-question">{activeAssessment.question_text}</p></div><div className="mt-8 border-t border-dashed border-[#dcd5cb] pt-7"><div className="flex items-center justify-between"><p className="section-kicker text-[#35634b]">Student response</p><span className="font-mono text-[10px] text-[#9a9185]">OCR TRANSCRIPT</span></div><p className="paper-lines mt-4 whitespace-pre-wrap pb-2 font-serif text-[17px] leading-8 text-[#36423a]" data-testid="extracted-answer">{activeAssessment.extracted_answer}</p></div></article>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="feedback" className="m-0" data-testid="feedback-tab-panel">
+                  <div className="grid gap-5 lg:grid-cols-[1fr_0.85fr]">
+                    <article className="rounded-2xl border border-[#dfe5df] bg-white p-5 sm:p-7" data-testid="feedback-panel"><div className="flex items-center gap-3"><div className="flex size-9 items-center justify-center rounded-xl bg-[#edf4ee] text-[#35634b]"><MessageSquareText size={17} /></div><div><p className="section-kicker">Teacher-ready comment</p><p className="mt-1 text-sm font-bold text-[#1e3a2b]">Constructive feedback</p></div></div><blockquote className="mt-6 border-l-2 border-[#c86d51] pl-5 font-serif text-lg leading-8 text-[#3f4d44]" data-testid="teacher-feedback">{activeAssessment.feedback}</blockquote><div className="mt-6 flex flex-wrap gap-2"><Button type="button" variant="outline" onClick={async () => { await navigator.clipboard.writeText(activeAssessment.feedback); toast.success("Feedback copied to clipboard"); }} className="border-[#c9dacc] bg-white text-[#35634b] hover:bg-[#edf4ee]" data-testid="copy-feedback-button">Copy feedback</Button><Button type="button" variant="ghost" onClick={() => setActiveAssessment(null)} className="text-[#718077]" data-testid="close-result-button">Close result</Button></div></article>
+                    <div className="space-y-4"><article className="rounded-2xl border border-[#cfe0d3] bg-[#eff7f1] p-5" data-testid="strengths-panel"><div className="flex items-center gap-2 text-[#35634b]"><Check size={16} /><p className="text-xs font-bold uppercase tracking-[0.14em]">What worked</p></div><ul className="mt-4 space-y-3 text-sm leading-6 text-[#526057]">{activeAssessment.strengths.map((item) => <li key={item} className="flex gap-3"><span className="mt-2 size-1.5 shrink-0 rounded-full bg-[#5b9a79]" />{item}</li>)}</ul></article><article className="rounded-2xl border border-[#eaded6] bg-[#fff8f4] p-5" data-testid="improvement-panel"><div className="flex items-center gap-2 text-[#a7543b]"><Lightbulb size={16} /><p className="text-xs font-bold uppercase tracking-[0.14em]">Improve next</p></div><ul className="mt-4 space-y-3 text-sm leading-6 text-[#526057]">{[...activeAssessment.weaknesses, ...activeAssessment.improvements].map((item) => <li key={item} className="flex gap-3"><ArrowRight size={14} className="mt-1.5 shrink-0 text-[#c86d51]" />{item}</li>)}</ul></article><article className="rounded-2xl border border-[#dfe5df] bg-white p-5" data-testid="short-answer-assessment"><div className="flex items-center gap-2"><MessageSquareText size={15} className="text-[#35634b]" /><p className="section-kicker">Short-answer judgement</p></div><p className="mt-3 text-sm leading-6 text-[#65736a]">{activeAssessment.short_answer_assessment}</p></article></div>
+                  </div>
+                </TabsContent>
+              </div>
+            </Tabs>
           </motion.section>
         )}
 

@@ -135,6 +135,16 @@
   .form-label { @apply mb-2 block text-xs font-bold uppercase tracking-[0.14em] text-[#526057]; }
   .form-input { @apply min-h-10 border-[#d9e3da] bg-[#fcfdfa] text-sm shadow-none focus-visible:border-[#5b9a79] focus-visible:ring-[#5b9a79]/25; }
   .section-kicker { @apply text-[10px] font-bold uppercase tracking-[0.18em] text-[#8a998f]; }
+  .paper-lines {
+    background-image: linear-gradient(transparent 31px, #e9e3da 32px);
+    background-size: 100% 32px;
+  }
 }
 
 ::selection { background: #d7e8db; color: #1e3a2b; }
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
