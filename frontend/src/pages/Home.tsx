@@ -9,7 +9,6 @@ import {
   BrainCircuit,
   Check,
   ChevronDown,
-  ClipboardCheck,
   FileImage,
   FileSearch,
   FileText,
@@ -31,6 +30,7 @@ import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EvalXLogo } from "@/components/EvalXLogo";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -177,18 +177,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-svh bg-[#faf8f5] text-[#1a201c]" data-testid="gradewise-app">
+    <div className="min-h-svh bg-[#faf8f5] text-[#1a201c]" data-testid="evalx-app">
       <header className="sticky top-0 z-20 border-b border-[#e5dfd5]/80 bg-[#faf8f5]/90 backdrop-blur-xl" data-testid="app-header">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
-          <div className="flex items-center gap-3">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-[#1e3a2b] text-[#f7f4ed] shadow-[0_6px_20px_rgba(30,58,43,0.18)]" data-testid="brand-mark">
-              <ClipboardCheck size={19} />
-            </div>
-            <div>
-              <p className="font-heading text-lg font-bold tracking-[-0.04em] text-[#1e3a2b]">gradewise</p>
-              <p className="hidden text-[10px] font-bold uppercase tracking-[0.18em] text-[#8a998f] sm:block">Teacher assessment studio</p>
-            </div>
-          </div>
+          <EvalXLogo />
           <nav className="flex items-center gap-1 text-sm font-semibold text-[#718077]" data-testid="main-navigation">
             <a href="#studio" className="rounded-lg px-3 py-2 hover:bg-[#edf2ee] hover:text-[#1e3a2b]" data-testid="studio-nav-link">Studio</a>
             <a href="#history" className="rounded-lg px-3 py-2 hover:bg-[#edf2ee] hover:text-[#1e3a2b]" data-testid="history-nav-link">History</a>
@@ -343,7 +335,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="mx-auto flex max-w-[1500px] items-center justify-between border-t border-[#e5dfd5] px-5 py-6 text-xs text-[#8a998f] sm:px-8 lg:px-12" data-testid="app-footer"><span>gradewise · made for thoughtful marking</span><span className="hidden items-center gap-1 sm:flex">Built for teacher review <ChevronDown size={13} /></span></footer>
+      <footer className="mx-auto flex max-w-[1500px] items-center justify-between border-t border-[#e5dfd5] px-5 py-6 text-xs text-[#8a998f] sm:px-8 lg:px-12" data-testid="app-footer"><span className="font-medium"><strong className="text-[#1e3a2b]">Eval<span className="text-[#c86d51]">X</span></strong> · evaluation, explained</span><span className="hidden items-center gap-1 sm:flex">Built for teacher review <ChevronDown size={13} /></span></footer>
     </div>
   );
 }

@@ -1,7 +1,7 @@
-# GradeWise — Living Spec
+# EvalX — Living Spec
 
 ## What it does
-GradeWise is a teacher-facing workspace for uploading a student answer image or PDF, entering the question and maximum marks, and receiving a live Gemini vision extraction plus a review-ready score, mark breakdown, transparent justification, answer-quality review, short-answer assessment, and constructive feedback.
+EvalX is a teacher-facing workspace for uploading a student answer image or PDF, entering the question and maximum marks, and receiving a live Gemini vision extraction plus a review-ready score, mark breakdown, transparent justification, answer-quality review, short-answer assessment, and constructive feedback.
 
 ## Data model
 - `AssessmentCreate`: file name/type, base64 file data, student name, subject, optional question text, optional pasted answer, maximum marks, and optional rubric.
@@ -18,6 +18,9 @@ The result workspace uses a professional dark score summary followed by three ta
 
 ## Landing experience
 The landing page uses a modern minimal visual system with Instrument Sans headings and DM Sans body copy. It includes an animated product preview, direct upload/workspace actions, hover-responsive three-step grading journey cards, and viewport-based section reveals. These interactions are frontend-only and consume no AI credits.
+
+## Brand identity
+The product is branded **EvalX** with the line “Evaluation, explained.” Its custom monogram combines an answer sheet, a teacher checkmark, and a terracotta X inside the evergreen rounded-square mark. The logo is used in the header and SVG favicon; browser title and metadata use EvalX consistently.
 
 ## Auth and integrations
 There is no authentication. Live grading uses Gemini `gemini-3.1-pro-preview` through the Emergent universal key in `backend/.env`. The teacher-facing mark is an AI suggestion and must remain reviewable; legacy records may display **MOCKED** because they were created before live grading was enabled.
