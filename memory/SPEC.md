@@ -16,5 +16,8 @@ GradeWise is a teacher-facing workspace for uploading a student answer image or 
 ## Result experience
 The result workspace uses a professional dark score summary followed by three tabs: Overview for score justification and criterion marks, Extracted work for a paper-style question/answer transcript, and Feedback for teacher comments, strengths, improvements, and short-answer judgement. This presentation is frontend-only and does not make additional AI requests.
 
+## Landing experience
+The landing page uses a modern minimal visual system with Instrument Sans headings and DM Sans body copy. It includes an animated product preview, direct upload/workspace actions, hover-responsive three-step grading journey cards, and viewport-based section reveals. These interactions are frontend-only and consume no AI credits.
+
 ## Auth and integrations
 There is no authentication. Live grading uses Gemini `gemini-3.1-pro-preview` through the Emergent universal key in `backend/.env`. The teacher-facing mark is an AI suggestion and must remain reviewable; legacy records may display **MOCKED** because they were created before live grading was enabled.

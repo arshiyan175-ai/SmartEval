@@ -18,10 +18,13 @@ import {
   ListChecks,
   Loader2,
   MessageSquareText,
+  MousePointer2,
   Search,
   ScanText,
+  ShieldCheck,
   Sparkles,
   Upload,
+  WandSparkles,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -194,17 +197,45 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1500px] px-5 pb-16 pt-8 sm:px-8 lg:px-12 lg:pt-12">
-        <section className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end" data-testid="page-intro">
-          <div className="max-w-3xl">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#dce7df] bg-[#edf4ee] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[#35634b]" data-testid="workspace-status"><Sparkles size={13} /> New assessment</div>
-            <h1 className="font-heading text-4xl font-bold leading-[1.04] tracking-[-0.06em] text-[#1e3a2b] sm:text-5xl lg:text-6xl" data-testid="page-title">From paper to<br /><span className="font-serif font-normal italic text-[#c86d51]">useful feedback.</span></h1>
-            <p className="mt-5 max-w-xl text-base leading-7 text-[#5b6c60] sm:text-lg" data-testid="page-description">Upload a student answer, add the question and marks, and get a thoughtful first-pass assessment your teacher judgement can build on.</p>
+      <main className="mx-auto max-w-[1500px] px-5 pb-16 sm:px-8 lg:px-12">
+        <section className="hero-grid relative -mx-5 overflow-hidden border-b border-[#e5dfd5] px-5 pb-14 pt-12 sm:-mx-8 sm:px-8 sm:pb-16 sm:pt-16 lg:-mx-12 lg:px-12 lg:pb-20 lg:pt-20" data-testid="landing-hero">
+          <div className="pointer-events-none absolute left-[48%] top-8 size-[430px] rounded-full bg-[#dce9df]/45 blur-[100px]" />
+          <div className="relative grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+            <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="max-w-3xl" data-testid="hero-copy">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#d4ded6] bg-white/80 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.17em] text-[#456451] shadow-[0_4px_18px_rgba(40,51,43,0.04)]" data-testid="hero-eyebrow"><Sparkles size={13} /> AI-assisted marking, teacher approved</div>
+              <h1 className="font-heading text-[2.8rem] font-semibold leading-[0.98] tracking-[-0.065em] text-[#18271f] sm:text-6xl lg:text-[4.7rem]" data-testid="page-title">Mark answers.<br /><span className="text-[#718279]">Keep your judgement.</span></h1>
+              <p className="mt-7 max-w-2xl text-base leading-7 text-[#65736a] sm:text-lg" data-testid="page-description">Turn an answer sheet into an explainable score, clean transcript, and constructive feedback—without losing the human context behind the mark.</p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row" data-testid="hero-actions">
+                <Button type="button" onClick={() => fileInputRef.current?.click()} className="group h-12 rounded-xl bg-[#1e3a2b] px-5 text-sm font-bold text-white shadow-[0_10px_28px_rgba(30,58,43,0.18)] hover:bg-[#14281e]" data-testid="hero-upload-button"><Upload className="transition-transform duration-200 group-hover:-translate-y-0.5" /> Upload an answer sheet</Button>
+                <Button type="button" variant="outline" onClick={() => document.getElementById("studio")?.scrollIntoView({ behavior: "smooth" })} className="h-12 rounded-xl border-[#d6ddd7] bg-white/70 px-5 text-sm font-bold text-[#34463b] hover:bg-white" data-testid="hero-workspace-button">Open grading workspace <ArrowRight /></Button>
+              </div>
+              <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-medium text-[#78857d]" data-testid="hero-trust-row"><span className="flex items-center gap-2"><ShieldCheck size={15} className="text-[#52735e]" /> Teacher stays in control</span><span className="flex items-center gap-2"><FileText size={15} className="text-[#52735e]" /> Images and PDFs</span><span className="flex items-center gap-2"><BrainCircuit size={15} className="text-[#52735e]" /> Clear score reasoning</span></div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.65, delay: 0.1 }} className="relative mx-auto w-full max-w-[590px]" data-testid="hero-product-preview">
+              <div className="absolute -left-6 top-12 hidden rounded-xl border border-[#dbe3dc] bg-white px-4 py-3 shadow-[0_14px_36px_rgba(40,51,43,0.12)] sm:block hero-float" data-testid="hero-ocr-note"><p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#8a998f]">OCR complete</p><p className="mt-1 text-sm font-bold text-[#1e3a2b]">Answer extracted</p></div>
+              <div className="overflow-hidden rounded-[24px] border border-[#d9e1da] bg-white shadow-[0_28px_80px_rgba(40,51,43,0.13)]">
+                <div className="flex items-center justify-between border-b border-[#e8ece8] bg-[#fbfcfa] px-5 py-3"><div className="flex gap-1.5"><span className="size-2 rounded-full bg-[#d9a48a]" /><span className="size-2 rounded-full bg-[#d6d8d2]" /><span className="size-2 rounded-full bg-[#9db5a5]" /></div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#9aa49d]">Assessment preview</p><span className="size-5" /></div>
+                <div className="grid min-h-[350px] sm:grid-cols-[0.84fr_1.16fr]">
+                  <div className="border-b border-[#e7ebe7] bg-[#f0f2ee] p-5 sm:border-b-0 sm:border-r"><div className="h-full rounded-lg border border-[#d8d8d1] bg-[#fffefb] p-5 shadow-sm"><div className="h-2 w-20 rounded-full bg-[#ced6cf]" /><div className="mt-5 h-2 w-full rounded-full bg-[#e5e7e2]" /><div className="mt-2 h-2 w-4/5 rounded-full bg-[#e5e7e2]" /><div className="mt-8 space-y-3"><div className="h-px bg-[#dfe4de]" /><div className="h-px bg-[#dfe4de]" /><div className="h-px bg-[#dfe4de]" /><div className="h-px bg-[#dfe4de]" /></div><div className="mt-8 h-2 w-28 rounded-full bg-[#d9a48a]/70" /></div></div>
+                  <div className="flex flex-col p-5 sm:p-6"><div className="flex items-center justify-between"><div><p className="text-[9px] font-bold uppercase tracking-[0.17em] text-[#99a39c]">Suggested score</p><p className="mt-1 font-heading text-3xl font-semibold tracking-[-0.05em] text-[#1e3a2b]">8.5<span className="text-sm font-medium text-[#8b978f]"> / 10</span></p></div><div className="flex size-11 items-center justify-center rounded-full border-[5px] border-[#6f9a7e] border-r-[#e3e8e3] text-[10px] font-bold text-[#35634b]">85%</div></div><div className="mt-6 rounded-xl border border-[#e4e8e4] bg-[#f9faf8] p-4"><div className="flex items-center gap-2"><WandSparkles size={13} className="text-[#b56549]" /><p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#8c6b5f]">Why this score</p></div><p className="mt-3 text-xs leading-5 text-[#627068]">Strong understanding with accurate evidence. One final explanation would make the response complete.</p></div><div className="mt-5 space-y-3"><div><div className="flex justify-between text-[10px] font-bold text-[#66736b]"><span>Understanding</span><span>4/4</span></div><div className="mt-1.5 h-1.5 rounded-full bg-[#edf0ed]"><div className="h-full w-full rounded-full bg-[#6b9879]" /></div></div><div><div className="flex justify-between text-[10px] font-bold text-[#66736b]"><span>Evidence</span><span>3/4</span></div><div className="mt-1.5 h-1.5 rounded-full bg-[#edf0ed]"><div className="h-full w-3/4 rounded-full bg-[#d49576]" /></div></div></div><div className="mt-auto flex items-center gap-2 pt-5 text-[10px] font-bold text-[#52735e]"><Check size={13} /> Ready for teacher review</div></div>
+                </div>
+              </div>
+              <div className="absolute -bottom-5 right-5 rounded-xl border border-[#dbe3dc] bg-[#1e3a2b] px-4 py-3 text-white shadow-[0_14px_36px_rgba(30,58,43,0.2)] hero-float-delayed" data-testid="hero-feedback-note"><p className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/55">Quality check</p><p className="mt-1 text-sm font-bold">Strong response</p></div>
+            </motion.div>
           </div>
-          <div className="flex gap-8 border-l border-[#e5dfd5] pl-5 lg:mb-1" data-testid="workspace-stats">
-            <div><p className="font-serif text-3xl font-bold text-[#1e3a2b]" data-testid="assessments-count">{recentAssessments.length}</p><p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-[#8a998f]">Assessed</p></div>
-            <div><p className="font-serif text-3xl font-bold text-[#1e3a2b]">{recentAssessments.length ? `${Math.round(recentAssessments.reduce((sum, item) => sum + item.percentage, 0) / recentAssessments.length)}%` : "—"}</p><p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-[#8a998f]">Avg. score</p></div>
+        </section>
+
+        <motion.section initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.5 }} className="py-14 sm:py-16" data-testid="grading-journey-section">
+          <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="section-kicker">A clearer marking flow</p><h2 className="mt-2 font-heading text-3xl font-semibold tracking-[-0.045em] text-[#1e3a2b]" data-testid="journey-heading">One upload. Three useful outcomes.</h2></div><p className="max-w-md text-sm leading-6 text-[#718077]" data-testid="journey-description">The interface does the organising so you can focus on whether the assessment feels fair.</p></div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {[{ icon: Upload, number: "01", title: "Upload the work", copy: "Add a clear image or PDF. Include a rubric when you want tighter marking guidance." }, { icon: ScanText, number: "02", title: "Review the transcript", copy: "Check the extracted question and student answer in a clean, paper-style reading view." }, { icon: Award, number: "03", title: "Understand the mark", copy: "See exactly why each mark was earned, plus strengths and the best next improvement." }].map((item, index) => <motion.article key={item.number} whileHover={{ y: -6 }} transition={{ duration: 0.2 }} className="group relative overflow-hidden rounded-2xl border border-[#dee4de] bg-white p-6 shadow-[0_8px_30px_rgba(40,51,43,0.04)] hover:border-[#bfcfc3] hover:shadow-[0_18px_42px_rgba(40,51,43,0.09)]" data-testid={`journey-card-${index + 1}`}><div className="flex items-center justify-between"><span className="flex size-11 items-center justify-center rounded-xl bg-[#edf3ee] text-[#35634b] transition-colors duration-200 group-hover:bg-[#1e3a2b] group-hover:text-white"><item.icon size={19} /></span><span className="font-mono text-xs font-bold text-[#b3bbb5]">{item.number}</span></div><h3 className="mt-6 font-heading text-lg font-semibold tracking-[-0.025em] text-[#1e3a2b]">{item.title}</h3><p className="mt-2 text-sm leading-6 text-[#718077]">{item.copy}</p><div className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#c86d51] transition-[width] duration-300 group-hover:w-full" /></motion.article>)}
           </div>
+        </motion.section>
+
+        <section className="mb-8 flex flex-col justify-between gap-5 border-t border-[#e5dfd5] pt-10 sm:flex-row sm:items-end" data-testid="workspace-intro">
+          <div><div className="mb-3 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#52735e]" data-testid="workspace-status"><MousePointer2 size={13} /> Your grading workspace</div><h2 className="font-heading text-3xl font-semibold tracking-[-0.045em] text-[#1e3a2b] sm:text-4xl">Ready when you are.</h2><p className="mt-3 max-w-xl text-sm leading-6 text-[#718077]">Upload the student work, set the maximum marks, and let the review begin.</p></div>
+          <div className="flex gap-8" data-testid="workspace-stats"><div><p className="font-heading text-3xl font-semibold tracking-[-0.04em] text-[#1e3a2b]" data-testid="assessments-count">{recentAssessments.length}</p><p className="mt-1 text-[10px] font-bold uppercase tracking-[0.15em] text-[#8a998f]">Assessed</p></div><div><p className="font-heading text-3xl font-semibold tracking-[-0.04em] text-[#1e3a2b]">{recentAssessments.length ? `${Math.round(recentAssessments.reduce((sum, item) => sum + item.percentage, 0) / recentAssessments.length)}%` : "—"}</p><p className="mt-1 text-[10px] font-bold uppercase tracking-[0.15em] text-[#8a998f]">Avg. score</p></div></div>
         </section>
 
         <section id="studio" className="grid gap-6 xl:grid-cols-[minmax(300px,0.85fr)_minmax(460px,1.15fr)]" data-testid="grading-studio">
