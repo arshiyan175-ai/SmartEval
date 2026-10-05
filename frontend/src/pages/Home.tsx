@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import {
   AlertCircle,
   ArrowRight,
@@ -12,6 +13,7 @@ import {
   FileImage,
   FileSearch,
   FileText,
+  GraduationCap,
   History,
   Lightbulb,
   ListChecks,
@@ -199,7 +201,7 @@ export default function Home() {
               <p className="mt-7 max-w-2xl text-base leading-7 text-[#65736a] sm:text-lg" data-testid="page-description">Turn an answer sheet into an explainable score, clean transcript, and constructive feedback—without losing the human context behind the mark.</p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row" data-testid="hero-actions">
                 <Button type="button" onClick={() => fileInputRef.current?.click()} className="group h-12 rounded-xl bg-[#1e3a2b] px-5 text-sm font-bold text-white shadow-[0_10px_28px_rgba(30,58,43,0.18)] hover:bg-[#14281e]" data-testid="hero-upload-button"><Upload className="transition-transform duration-200 group-hover:-translate-y-0.5" /> Upload an answer sheet</Button>
-                <Button type="button" variant="outline" onClick={() => document.getElementById("studio")?.scrollIntoView({ behavior: "smooth" })} className="h-12 rounded-xl border-[#d6ddd7] bg-white/70 px-5 text-sm font-bold text-[#34463b] hover:bg-white" data-testid="hero-workspace-button">Open grading workspace <ArrowRight /></Button>
+                <Link to="/exams" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-[#d6ddd7] bg-white/70 px-5 text-sm font-bold text-[#34463b] shadow-sm hover:bg-white" data-testid="hero-exam-button"><GraduationCap size={16} /> Grade a full exam <ArrowRight size={16} /></Link>
               </div>
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-medium text-[#78857d]" data-testid="hero-trust-row"><span className="flex items-center gap-2"><ShieldCheck size={15} className="text-[#52735e]" /> Teacher stays in control</span><span className="flex items-center gap-2"><FileText size={15} className="text-[#52735e]" /> Images and PDFs</span><span className="flex items-center gap-2"><BrainCircuit size={15} className="text-[#52735e]" /> Clear score reasoning</span></div>
             </motion.div>

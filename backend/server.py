@@ -11,6 +11,7 @@ from typing import List
 import uuid
 from datetime import datetime
 from routers.assessments import router as assessments_router
+from routers.exams import router as exams_router
 
 
 ROOT_DIR = Path(__file__).parent
@@ -63,9 +64,7 @@ async def get_status_checks():
 
 
 api_router.include_router(assessments_router)
-
-# Include the router in the main app
-app.include_router(api_router)
+api_router.include_router(exams_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -81,3 +80,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+
+# Keep the aggregate /api router inclusion as the final registration statement.
+app.include_router(api_router)

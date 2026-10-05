@@ -1,0 +1,53 @@
+{
+  "iteration": 1,
+  "summary": "All 6 acceptance criteria exercised: 1 backend test (passed) + 5 browser checks (all passed). No bugs found.",
+  "passed": 6,
+  "failed": 0,
+  "bugs": [],
+  "action_items": [],
+  "retest_needed": false,
+  "checks": [
+    {
+      "criterion": "Full exam page is reachable from the EvalX landing page",
+      "name": "landing-exams-navigation",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Clicked 'Grade a full exam' on landing page; navigated to /exams; exam-grader-app, question-paper-card, and answer-sheets-card all visible."
+    },
+    {
+      "criterion": "Legacy single-answer grading remains available",
+      "name": "home-studio-legacy-workflow",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Home page shows grading-studio section with upload-dropzone and assess-answer-button; History nav link reveals history-section with history-table (assessment history)."
+    },
+    {
+      "criterion": "Teacher can prepare separate exam files",
+      "name": "exam-file-uploads-list",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Uploaded 1 file to question-paper-input (shows question-paper-file with filename); uploaded 3 files to answer-sheets-input, answer-sheet-count shows '3 files', and rows list tscheck-answer-page-1/2/3.png in reading order."
+    },
+    {
+      "criterion": "Question extraction review supports teacher edits",
+      "name": "exam-question-review-edit-total",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Intercepted POST /api/exams/extract with a stubbed draft (no live AI credit consumed) returning 2 questions totalling 6 marks; question-review-section rendered with review-question-1/2; editing question-text-1 persisted value; editing question-marks-1 from 2 to 5 updated reviewed-total-marks from 6 to 9 automatically."
+    },
+    {
+      "criterion": "Saved full exam result is complete",
+      "name": "test_tscheck_saved_exam_result",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "GET /api/exams -> 200; found student_name=Aisha Khan, exam_title=Biology Unit Test, subject=Biology, total_marks=10, score=10, overall_feedback non-empty, question_results=[Q1,Q2,Q3] each with matched_answer/reason/improvement, answer_sheet_names length=2."
+    },
+    {
+      "criterion": "Saved full exam result is complete / Per-question details are interactive and exclusive",
+      "name": "saved-exam-result-detail-exclusive",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Opened saved Aisha Khan exam from /exams recent list (no AI credit consumed, pure GET). exam-score-value=10, exam-overall-feedback non-empty, exam-question-results has 3 rows. result-question-detail-1 visible by default (Q1 matched answer, reason, improvement). After clicking toggle-result-question-2: result-question-detail-2 visible with matched-answer-2 and question-reason-2 populated, and result-question-detail-1 no longer present (exclusive accordion)."
+    }
+  ]
+}

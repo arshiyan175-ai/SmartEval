@@ -44,3 +44,51 @@ export interface AssessmentCreate {
   max_marks: number;
   rubric: string;
 }
+
+export interface ExamDocument {
+  file_name: string;
+  file_type: string;
+  file_data: string;
+}
+
+export interface ExamQuestion {
+  number: string;
+  question_text: string;
+  max_marks: number;
+}
+
+export interface ExamDraft {
+  exam_title: string;
+  subject: string;
+  total_marks: number;
+  confidence: "High" | "Medium" | "Low";
+  questions: ExamQuestion[];
+}
+
+export interface ExamQuestionResult {
+  number: string;
+  question_text: string;
+  matched_answer: string;
+  max_marks: number;
+  awarded_marks: number;
+  match_confidence: "High" | "Medium" | "Low";
+  reason: string;
+  quality: string;
+  improvement: string;
+}
+
+export interface ExamResult {
+  id: string;
+  student_name: string;
+  exam_title: string;
+  subject: string;
+  answer_sheet_names: string[];
+  total_marks: number;
+  score: number;
+  percentage: number;
+  confidence: "High" | "Medium" | "Low";
+  overall_quality: string;
+  overall_feedback: string;
+  question_results: ExamQuestionResult[];
+  created_at: string;
+}
